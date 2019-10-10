@@ -1,16 +1,16 @@
 # Malloc-Implementation
-Implementation of C malloc using segregated explicit free lists with an approximate best-fit search.
+Implementation of C `malloc()`/`free()`/`realloc()` using segregated explicit free lists with an approximate best-fit search.
 
 # Notes
 
 Using the test cases in malloc-tester on my machine (i7-7700HQ, 16GB Ram, Ubuntu 16.04 LTS), both
-mallocs are neck-and-neck. On all tries on my computer, my malloc has been within 95% to 105% of my
-OS's malloc.
+mallocs are neck-and-neck. On all tries on my computer, `my_malloc()` and `my_free()` has been within 95% to 105% of my
+OS's `malloc()` and `free()`.
 
 # TODO
 
-- Improve test suite, generate test case from actual real-world malloc() traces.
-- Improve malloc() further for real-world malloc() patterns.
+- Improve test suite, generate test case from actual real-world `malloc()` traces.
+- Improve `malloc()` further for real-world malloc() patterns.
 
 # File Documentation
 
@@ -36,7 +36,7 @@ segregatedStart contains 28 pointers to linked lists. Each linked list connects 
 memory that are of similar size
 
 The first 8 lists of segregatedStart correspond with free lists for chunks of size `0-127` bytes,
-128-255 bytes, ..., 896-1023 bytes.
+`128-255` bytes, ..., `896-1023` bytes.
 
 The next  20 lists of segregatedStart correspond with free lists for chunks of size `1024-2047`,
 `2048-4095...2^29-(2^30-1)` bytes.
