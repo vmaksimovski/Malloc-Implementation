@@ -178,7 +178,7 @@ int main(){
 
     printf("Test case finished successfully.\n");
     printf("It took your OS's malloc %f ms to run, while my implementation took %f ms.\n"
-           "This is within %.2f%% of your OS's malloc!",
+           "This is within %.2f%% of your OS's malloc!\n",
            1000 * total_time_for_system_malloc, 1000 * total_time_for_my_malloc,
            100 * total_time_for_system_malloc / total_time_for_my_malloc);
 }
