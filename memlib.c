@@ -19,22 +19,21 @@ static char *mem_brk;        /* points to last byte of heap */
 static char *mem_max_addr;   /* largest legal heap address */
 
 /*
- * Maximum heap size in bytes
- */
-#define MAX_HEAP (100*(1<<20))  /* 20 MB */
-
-/*
  * mem_init - initialize the memory system model
  */
-void mem_init(void)
+void mem_init(int max_heap_size)
 {
     /* allocate the storage we will use to model the available VM */
-    if ((mem_start_brk = (char *)malloc(MAX_HEAP)) == NULL) {
+
+	// NOTE: this is technically an OS malloc() call, but this is
+	// only used ONCE at initialization time.
+
+    if ((mem_start_brk = (char *)malloc(max_heap_size)) == NULL) {
         fprintf(stderr, "mem_init_vm: malloc error\n");
         exit(1);
     }
 
-    mem_max_addr = mem_start_brk + MAX_HEAP;  /* max legal heap address */
+    mem_max_addr = mem_start_brk + max_heap_size;  /* max legal heap address */
     mem_brk = mem_start_brk;                  /* heap is empty initially */
 }
 
