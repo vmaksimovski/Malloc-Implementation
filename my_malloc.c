@@ -268,7 +268,7 @@ int isEpilogue(int s){
 /*
  * my_init - initialize the malloc package.
  */
-int my_init(){
+int my_malloc_init(){
     // initialize segregated list
     segregatedStart = mem_sbrk(sizeof(blockHeader*) * BINCOUNT);
     if(segregatedStart == NULL){
