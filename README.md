@@ -10,12 +10,16 @@ OS's malloc.
 # TODO
 
 - Improve test suite, generate test case from actual real-world malloc() traces.
+- Improve malloc() further for real-world malloc() patterns.
 
 # File Documentation
 
-`malloc_tester.c` -
-`my_malloc.c`
-`memlib.c` -
+`malloc_tester.c` - Tests my implementation of malloc()/free(), and compares it against the OS's malloc() and free() functions.
+
+`my_malloc.c` - Contains malloc()/free()/realloc() functions implemented using segregated explicit free lists. 
+
+`memlib.c` - Contains a very simple implementation of sbrk(), which is used by my implementation of malloc() to allocate heap memory.
+
 # Details on Malloc implementation
 my_malloc.c - contains malloc/free/realloc functions implemented using segregated explicit free lists.
 
