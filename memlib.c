@@ -21,7 +21,7 @@ static char *mem_max_addr;   /* largest legal heap address */
 /*
  * Maximum heap size in bytes
  */
-#define MAX_HEAP (20*(1<<20))  /* 20 MB */
+#define MAX_HEAP (100*(1<<20))  /* 20 MB */
 
 /*
  * mem_init - initialize the memory system model

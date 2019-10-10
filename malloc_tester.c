@@ -2,10 +2,10 @@
 #include <string.h>
 #include <time.h>
 
-#include "mm.h"
+#include "my_malloc.h"
 #include "memlib.h"
 
-#define NUMBER_OF_ALLOCATIONS 10000
+#define NUMBER_OF_ALLOCATIONS 25000
 void* my_malloc_allocated_chunks[NUMBER_OF_ALLOCATIONS];
 void* system_malloc_allocated_chunks[NUMBER_OF_ALLOCATIONS];
 
@@ -26,8 +26,8 @@ int generate_block_size(enum generation_type block_generation_mode){
         // generate blocks of size 100...1000 with step sizes 100
         return (rand() % 10 + 1) * 100;
     } else if(block_generation_mode == RandomBlockSizeGeneration){
-        // generate blocks of size 2^n for n between 4 and 16 (16, 32, 64...16384)
-        return 1 << (rand() % 13 + 4);
+        // generate blocks of size 2^n for n between 4 and 14 (16, 32, 64...16384)
+        return 1 << (rand() % 11 + 4);
     }
 
     return 0;
@@ -57,13 +57,13 @@ void init_allocate(){
     memset(my_malloc_allocated_chunks, 0, sizeof(my_malloc_allocated_chunks));
     memset(system_malloc_allocated_chunks, 0, sizeof(system_malloc_allocated_chunks));
     mem_init();
-    mm_init();
+    my_malloc_init();
 }
 
 void dealloc(){
     for(int i = 0; i < next_block_index; i++){
         if(my_malloc_allocated_chunks[i]){
-            mm_free(my_malloc_allocated_chunks[i]);
+            my_free(my_malloc_allocated_chunks[i]);
         	my_malloc_allocated_chunks[i] = NULL;
         }
         if(system_malloc_allocated_chunks[i]){
@@ -90,7 +90,7 @@ void test_allocation(enum generation_type block_generation_mode){
             int size = generate_block_size(block_generation_mode);
 
             start = clock();
-            void* my_malloc_new_pointer = mm_malloc(size);
+            void* my_malloc_new_pointer = my_malloc(size);
             end = clock();
 
             double time_taken_for_my_malloc = (end - start) / (double) CLOCKS_PER_SEC;
@@ -127,7 +127,7 @@ void test_allocation(enum generation_type block_generation_mode){
                                                           my_malloc_allocated_chunks,
                                                           random_block_number);
              start = clock();
-             mm_free(*my_malloc_ptr);
+             my_free(*my_malloc_ptr);
              end = clock();
              *my_malloc_ptr = NULL;
 
@@ -180,5 +180,5 @@ int main(){
     printf("It took your OS's malloc %f ms to run, while my implementation took %f ms.\n"
            "This is within %.2f%% of your OS's malloc!",
            1000 * total_time_for_system_malloc, 1000 * total_time_for_my_malloc,
-           100 * total_time_for_my_malloc / total_time_for_system_malloc);
+           100 * total_time_for_system_malloc / total_time_for_my_malloc);
 }

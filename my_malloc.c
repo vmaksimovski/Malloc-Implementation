@@ -1,5 +1,5 @@
 /*
- * mm.c - malloc/free/realloc implemented using segregated explicit free lists
+ * my_malloc.c - malloc/free/realloc implemented using segregated explicit free lists
  *
  * This library implements memory allocation operations by using an approximate power-of-two best-fit search.
  * Each allocated payload has a header and a footer that contain the block size, and an isAllocated bit for validity.
@@ -31,7 +31,7 @@
 
 #include "memlib.h"
 
-/* single word (4) or double word (8) alignment */
+/* every malloc blocks is aligned by this value i.e. each block's address % ALIGHNMENT == 0*/
 #define ALIGNMENT 8
 
 /* rounds up to the nearest multiple of ALIGNMENT */
@@ -74,7 +74,7 @@ blockHeader* bestFit(size_t allocSize);
 int memoryExtend(void* p);
 int isEpilogue(int s);
 
-int mm_check();
+int my_check();
 
 blockHeader** segregatedStart;
 blockHeader* prologueBlock;
@@ -266,9 +266,9 @@ int isEpilogue(int s){
 }
 
 /*
- * mm_init - initialize the malloc package.
+ * my_init - initialize the malloc package.
  */
-int mm_init(){
+int my_init(){
     // initialize segregated list
     segregatedStart = mem_sbrk(sizeof(blockHeader*) * BINCOUNT);
     if(segregatedStart == NULL){
@@ -302,10 +302,10 @@ int mm_init(){
 
 
 /*
- * mm_malloc - Allocate a block by finding an appropriate allocation location using bestFit
+ * my_malloc - Allocate a block by finding an appropriate allocation location using bestFit
  *             allocating the necessary memory, and creating a new free block if there's residue
  */
-void *mm_malloc(size_t size){
+void *my_malloc(size_t size){
     size = ALIGN(size);
     int blockSize = 2 * HSIZE + size;
 
@@ -367,10 +367,10 @@ void *mm_malloc(size_t size){
 }
 
 /*
- * mm_free - coalesce the current free block with the previous and next adjacent blocks if they're free
+ * my_free - coalesce the current free block with the previous and next adjacent blocks if they're free
  *           and add the block to the appropriate segregated list
  */
-void mm_free(void *ptr){
+void my_free(void *ptr){
     blockHeader* newPtr = ptr;
     newPtr--;
 
@@ -399,21 +399,21 @@ void mm_free(void *ptr){
 }
 
 /*
- * mm_realloc - contains two optimization to increase throughput
+ * my_realloc - contains two optimization to increase throughput
  *              generally, will use a malloc() and free() operation
                 to generate the reallocated block
  */
-void *mm_realloc(void *oldptr, size_t size){
+void *my_realloc(void *oldptr, size_t size){
     blockHeader* t = oldptr - HSIZE;
 
     // if ptr == NULL, realloc is equivalent to malloc(size)
     if(oldptr == NULL){
-        return mm_malloc(size);
+        return my_malloc(size);
     }
 
     // if size == 0, realloc is equivalent to free(ptr);
     if(size == 0){
-        mm_free(oldptr);
+        my_free(oldptr);
         return NULL;
     }
 
@@ -462,18 +462,18 @@ void *mm_realloc(void *oldptr, size_t size){
 
     // otherwise, just use malloc() and free()
     size_t copySize = t->size - 2 * HSIZE;
-    void* newptr = mm_malloc(size);
+    void* newptr = my_malloc(size);
     if (newptr == NULL){
         return NULL;
     }
     memcpy(newptr, oldptr, copySize);
-    mm_free(oldptr);
+    my_free(oldptr);
     return newptr;
 }
 
-// mm_check() checks for heap consistency
+// my_check() checks for heap consistency
 // @returns 1 if the heap is consistent, 0 otherwise
-int mm_check(){
+int my_check(){
     // checking for prologue consistency
     if(prologueBlock->valid != -1 || prologueBlock->size != HSIZE){
         printf("ERR: PROLOGUE MODIFIED\n");
