@@ -10,15 +10,15 @@ OS's `malloc()` and `free()`.
 # TODO
 
 - Improve test suite, generate test case from actual real-world `malloc()` traces.
-- Improve `malloc()` further for real-world malloc() patterns.
+- Improve `malloc()` further for real-world `malloc()` patterns.
 
 # File Documentation
 
-`malloc_tester.c` - Tests my implementation of malloc()/free(), and compares it against the OS's malloc() and free() functions.
+`malloc_tester.c` - Tests my implementation of `malloc()`/`free()`, and compares it against the OS's `malloc()` and `free()` functions.
 
-`my_malloc.c` - Contains malloc()/free()/realloc() functions implemented using segregated explicit free lists. 
+`my_malloc.c` - Contains `malloc()`/`free()`/`realloc()` functions implemented using segregated explicit free lists.
 
-`memlib.c` - Contains a very simple implementation of sbrk(), which is used by my implementation of malloc() to allocate heap memory.
+`memlib.c` - Contains a very simple implementation of `sbrk()`, which is used by my implementation of `malloc()` to allocate heap memory.
 
 # Details on Malloc implementation
 `my_malloc.c` - contains malloc/free/realloc functions implemented using segregated explicit free lists.
@@ -47,7 +47,7 @@ that interval.
 The best-fit search goes over each linked list, and tries to find a free block that fits the
 requested size.
 
-`malloc()` - a free chunk of memory that fits the needed size is found using bestFit(). This block is
+`malloc()` - a free chunk of memory that fits the needed size is found using `bestFit()`. This block is
 then cut into two blocks, one for the allocated block, and the other for the leftover memory. The
 latter is reinserted in the segregated list. In case the heap needed to be extended to allocate this
 memory, and the allocated size is small, we'll allocate multiple free blocks for future use, to
@@ -73,18 +73,18 @@ make
 After building the project, execute `malloc_tester` to test the malloc implementation.
 There are currently three test cases:
 
-1. Execute malloc() and free() randomly (i.e. with equal probability), and each malloc() call
-requests between 20-40 bytes of memory allocated. This test simulates the malloc() and free()
+1. Execute `malloc()` and `free()` randomly (i.e. with equal probability), and each `malloc()` call
+requests between 20-40 bytes of memory allocated. This test simulates the `malloc()` and `free()`
 pattern of a linked list by generating very small blocks.
 
-2. Execute malloc() and free() randomly (i.e. with equal probability), and each malloc() call
+2. Execute `malloc()` and `free()` randomly (i.e. with equal probability), and each `malloc()` call
 requests between 100-1000 bytes of memory allocated. This test simulates array allocations of sizes
 between 25 to 250 integers.
 
-3. Execute malloc() and free() randomly (i.e. with equal probability), and each malloc() call
+3. Execute `malloc()` and `free()` randomly (i.e. with equal probability), and each `malloc()` call
 requests some power of two between 16 to 16384 bytes of memory allocated. This simulates general OS
 usage, with unpredictable byte size requests.
 
 The program uses user input to choose between these test cases. Each time it requests for a block
-allocation or deallocation, it calls both my_malloc() (my implementation) and malloc() (the OS
+allocation or deallocation, it calls both `my_malloc()` (my implementation) and `malloc()` (the OS
 malloc) and calculates how much time it took for each call to finish.
