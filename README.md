@@ -4,7 +4,7 @@ Implementation of C `malloc()`/`free()`/`realloc()` using segregated explicit fr
 # Notes
 
 Using the test cases in malloc-tester on my machine (i7-7700HQ, 16GB Ram, Ubuntu 16.04 LTS), both
-mallocs are neck-and-neck. On all tries on my computer, `my_malloc()` and `my_free()` has been within 95% to 105% of my
+mallocs are neck-and-neck. On all tries on my computer, `my_malloc()` and `my_free()` has been within 85% to 90% of my
 OS's `malloc()` and `free()`.
 
 # TODO

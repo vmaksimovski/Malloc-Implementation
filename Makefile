@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -O2
+CFLAGS = -Wall -O0
 
 OBJS = malloc_tester.o my_malloc.o memlib.o
 
